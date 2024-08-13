@@ -6,6 +6,9 @@ import Right from './components/Right';
 import NowPlaying from './components/NowPlaying';
 import UploadSong from './components/UploadSong';
 import axios from 'axios';
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const App = () => {
     const [songs, setSongs] = useState([]);
@@ -19,7 +22,7 @@ const App = () => {
     useEffect(() => {
         const fetchSongs = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/songs');
+                const response = await axios.get(`${process.env.BACKEND_ADDRESS}/api/songs`);
                 setSongs(response.data);
                 if (response.data.length > 0) {
                     setCurrentSong(response.data[0]);
