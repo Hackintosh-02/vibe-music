@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import bannerImage from '../assets/images/Banner.png';
 import axios from 'axios';
 
+
 const MainContent = ({ onPlayPause }) => {
     const [songs, setSongs] = useState([]);
     const [draggedSong, setDraggedSong] = useState(null);
@@ -9,7 +10,7 @@ const MainContent = ({ onPlayPause }) => {
     useEffect(() => {
         const fetchSongs = async () => {
             try {
-                const response = await axios.get(`${process.env.BACKEND_ADDRESS}/api/songs`);
+                const response = await axios.get('http://13.60.230.157/api/songs');
                 setSongs(response.data);
             } catch (error) {
                 console.error('Error fetching songs:', error);

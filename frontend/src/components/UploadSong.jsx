@@ -30,7 +30,7 @@ const UploadSong = () => {
         formData.append('songFile', songData.filePath);
 
         try {
-            await axios.post(`${process.env.BACKEND_ADDRESS}/api/songs`, formData, {
+            await axios.post('http://13.60.230.157/api/songs', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
