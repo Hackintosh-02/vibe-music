@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Howl } from 'howler';
 import { FaPlay, FaPause, FaBackward, FaForward, FaRandom, FaRedo } from 'react-icons/fa';
 
-const NowPlaying = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, toggleShuffle, toggleLoop, isShuffling, isLooping }) => {
+const NowPlaying = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, toggleShuffle, toggleLoop, isShuffling, isLooping, smallScreen }) => {
     const soundRef = useRef(null);
     const [progress, setProgress] = useState(0);
     const intervalRef = useRef(null);
@@ -16,13 +16,13 @@ const NowPlaying = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, t
             soundRef.current = new Howl({
                 src: [currentSong.filePath],
                 html5: true,
-                loop: isLooping, // Set the loop state here
+                loop: isLooping,
                 onend: () => {
                     if (isLooping) {
-                        soundRef.current.seek(0); // Restart the current song
-                        soundRef.current.play(); // Replay the current song if looping is enabled
+                        soundRef.current.seek(0);
+                        soundRef.current.play();
                     } else {
-                        onNext(); // Move to the next song if looping is not enabled
+                        onNext();
                     }
                 },
             });
@@ -42,8 +42,8 @@ const NowPlaying = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, t
     }, [currentSong]);
 
     useEffect(() => {
-        if (soundRef.current) {
-            soundRef.current.loop(isLooping); // Update loop state without restarting the song
+        if (soundRef.current && isPlaying) {
+            soundRef.current.loop(isLooping);
         }
     }, [isLooping]);
 
@@ -81,13 +81,15 @@ const NowPlaying = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, t
     }
 
     return (
-        <div className="bg-red-800 p-4 rounded-lg text-white m-auto w-80">
+        <div className={`bg-red-800 p-4 rounded-lg text-white ${smallScreen ? 'fixed bottom-0 left-0 right-0 w-full' : 'm-auto w-80'}`}>
             <h3 className="text-center font-bold mb-4">Now Playing</h3>
-            <img
-                src={currentSong.albumCoverPath}
-                alt={currentSong.title}
-                className="w-56 h-auto rounded-lg mb-4 m-auto"
-            />
+            {!smallScreen && (
+                <img
+                    src={currentSong.albumCoverPath}
+                    alt={currentSong.title}
+                    className="w-56 h-auto rounded-lg mb-4 m-auto"
+                />
+            )}
             <div className="text-center">
                 <h4 className="font-bold text-lg">{currentSong.title}</h4>
                 <p className="text-sm text-gray-400">{currentSong.artist}</p>

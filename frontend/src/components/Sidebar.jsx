@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../assets/icons/logo.png'; // Import the logo image
+import logo from '../assets/icons/logo.png';
 import homeIcon from '../assets/icons/home.png';
 import trendsIcon from '../assets/icons/trends.png';
 import libraryIcon from '../assets/icons/library.png';
@@ -8,12 +8,12 @@ import settingsIcon from '../assets/icons/settings.png';
 import logoutIcon from '../assets/icons/logout.png';
 
 const Sidebar = () => (
-    <div className=" bg-[#0E0E0E] text-white w-64 min-h-screen p-6 flex flex-col justify-between">
+    <div className="fixed bg-[#0E0E0E] text-white w-64 h-full p-6 flex flex-col justify-between z-20">
         <div>
             <div className="flex items-center space-x-2 mb-10">
-                <img src={logo} alt="Logo" className="w-8 h-8" /> {/* Adjust the size as needed */}
+                <img src={logo} alt="Logo" className="w-8 h-8" />
                 <div className="text-3xl font-bold">
-                    <span className="text-red-500">Vibe</span>Music
+                    <span className="text-red-500">Dream</span>Music
                 </div>
             </div>
             <ul className="space-y-6">

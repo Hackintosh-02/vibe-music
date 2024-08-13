@@ -3,15 +3,18 @@ import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import MainContent from './components/MainContent';
 import Right from './components/Right';
+import NowPlaying from './components/NowPlaying';
+import UploadSong from './components/UploadSong';
 import axios from 'axios';
 
 const App = () => {
-    const [songs, setSongs] = useState([]); // Holds the list of songs
-    const [currentSong, setCurrentSong] = useState(null); // Holds the current song
-    const [isPlaying, setIsPlaying] = useState(false); // Holds the play/pause state
-    const [currentIndex, setCurrentIndex] = useState(0); // Keeps track of the current song's index
-    const [isLooping, setIsLooping] = useState(false); // State for looping
-    const [isShuffling, setIsShuffling] = useState(false); // State for shuffling
+    const [songs, setSongs] = useState([]);
+    const [currentSong, setCurrentSong] = useState(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [isLooping, setIsLooping] = useState(false);
+    const [isShuffling, setIsShuffling] = useState(false);
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1200);
 
     useEffect(() => {
         const fetchSongs = async () => {
@@ -30,17 +33,25 @@ const App = () => {
         fetchSongs();
     }, []);
 
+    useEffect(() => {
+        const handleResize = () => {
+            setIsSmallScreen(window.innerWidth <= 1200);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const handlePlayPause = (song) => {
         if (song) {
             if (currentSong && currentSong._id === song._id) {
-                setIsPlaying(!isPlaying); // Toggle play/pause for the same song
+                setIsPlaying(!isPlaying);
             } else {
-                setCurrentSong(song); // Select a new song
-                setIsPlaying(true); // Start playing the new song
-                setCurrentIndex(songs.findIndex(s => s._id === song._id)); // Update current index
+                setCurrentSong(song);
+                setIsPlaying(true);
+                setCurrentIndex(songs.findIndex(s => s._id === song._id));
             }
         } else {
-            setIsPlaying(false); // Pause the current song
+            setIsPlaying(false);
         }
     };
 
@@ -57,10 +68,8 @@ const App = () => {
             setIsPlaying(true);
         }
     };
-    
 
     const playPreviousSong = () => {
-        console.log('playPreviousSong function called');
         if (songs.length > 0) {
             const prevIndex = (currentIndex - 1 + songs.length) % songs.length;
             setCurrentIndex(prevIndex);
@@ -69,7 +78,6 @@ const App = () => {
         }
     };
 
-    // Define the toggle functions
     const toggleShuffle = () => {
         setIsShuffling(!isShuffling);
     };
@@ -80,26 +88,55 @@ const App = () => {
 
     return (
         <div className="flex h-screen overflow-hidden bg-gradient-to-b from-red-800 to-black">
-            <Sidebar />
-            <div className="flex-1 flex flex-col overflow-y-auto">
+            {!isSmallScreen && (
+                <div className="hidden lg:flex w-64">
+                    <Sidebar />
+                </div>
+            )}
+            <div className={`flex-1 flex flex-col overflow-y-auto ${isSmallScreen ? 'main-content-mobile' : ''}`}>
                 <Header />
+                {isSmallScreen && (
+                    <div className="block lg:hidden p-4">
+                        <UploadSong />
+                    </div>
+                )}
                 <MainContent 
                     songs={songs}
                     currentSong={currentSong} 
                     onPlayPause={handlePlayPause} 
                 />
             </div>
-            <Right
-                currentSong={currentSong}
-                isPlaying={isPlaying}
-                onPlayPause={handlePlayPause}
-                onNext={playNextSong}
-                onPrevious={playPreviousSong}
-                toggleShuffle={toggleShuffle} // Pass the shuffle toggle function
-                toggleLoop={toggleLoop} // Pass the loop toggle function
-                isShuffling={isShuffling} // Pass the shuffle state
-                isLooping={isLooping} // Pass the loop state
-            />
+            {!isSmallScreen && (
+                <div className="hidden lg:flex w-96">
+                    <Right
+                        currentSong={currentSong}
+                        isPlaying={isPlaying}
+                        onPlayPause={handlePlayPause}
+                        onNext={playNextSong}
+                        onPrevious={playPreviousSong}
+                        toggleShuffle={toggleShuffle}
+                        toggleLoop={toggleLoop}
+                        isShuffling={isShuffling}
+                        isLooping={isLooping}
+                    />
+                </div>
+            )}
+            {isSmallScreen && (
+                <div className="fixed bottom-0 left-0 right-0 z-50">
+                    <NowPlaying
+                        currentSong={currentSong}
+                        isPlaying={isPlaying}
+                        onPlayPause={handlePlayPause}
+                        onNext={playNextSong}
+                        onPrevious={playPreviousSong}
+                        toggleShuffle={toggleShuffle}
+                        toggleLoop={toggleLoop}
+                        isShuffling={isShuffling}
+                        isLooping={isLooping}
+                        smallScreen={true}
+                    />
+                </div>
+            )}
         </div>
     );
 };

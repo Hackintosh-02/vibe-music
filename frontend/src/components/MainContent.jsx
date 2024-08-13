@@ -10,7 +10,6 @@ const MainContent = ({ onPlayPause }) => {
         const fetchSongs = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/api/songs');
-                console.log('API Response:', response.data);
                 setSongs(response.data);
             } catch (error) {
                 console.error('Error fetching songs:', error);
@@ -41,6 +40,13 @@ const MainContent = ({ onPlayPause }) => {
 
     const onDrop = () => {
         setDraggedSong(null);
+        // After dropping, update the indexes
+        setSongs((prevSongs) =>
+            prevSongs.map((song, index) => ({
+                ...song,
+                index: index + 1,
+            }))
+        );
     };
 
     return (
@@ -60,7 +66,7 @@ const MainContent = ({ onPlayPause }) => {
                         <li
                             key={song._id}
                             className="grid grid-cols-4 gap-4 items-center p-2 rounded hover:bg-gray-700 cursor-pointer"
-                            onClick={() => onPlayPause(song)} // Handle song click
+                            onClick={() => onPlayPause(song)}
                             draggable
                             onDragStart={(e) => onDragStart(e, index)}
                             onDragOver={() => onDragOver(index)}

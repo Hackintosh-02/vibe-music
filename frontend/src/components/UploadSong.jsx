@@ -49,7 +49,7 @@ const UploadSong = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="bg-gray-800 p-4 w-80 rounded-lg m-auto text-white">
+        <form onSubmit={handleSubmit} className="bg-gray-800 p-4 w-full md:w-80 rounded-lg m-auto text-white">
             <h3 className="text-center font-bold mb-4">Upload Song</h3>
             <div className="mb-2">
                 <label htmlFor="title" className="block text-sm font-medium text-gray-300">Title</label>
