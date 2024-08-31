@@ -3,7 +3,7 @@ import searchIcon from '../assets/icons/search.png';
 
 const Header = () => (
     <div className="bg-transparent text-white">
-        <div className="max-w-7xl mx-auto flex items-center justify-between p-6"> {/* Adjusted to max-w-7xl for a wider layout */}
+        <div className="max-w-7xl mx-auto flex items-center justify-between p-6">
             <div className="flex items-center space-x-8">
                 <ul className="flex space-x-8 text-white text-lg">
                     <li className="hover:text-red-500 font-extrabold cursor-pointer">Music</li>
