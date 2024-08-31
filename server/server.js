@@ -39,8 +39,8 @@ const Song = mongoose.model("Song", songSchema);
 // API to upload a song and cover photo
 app.post("/api/songs", uploadSongAndCover, async (req, res) => {
     try {
-        console.log(req.files); // Add this line to see the files being uploaded
-        console.log(req.body);
+        // console.log(req.files); // Add this line to see the files being uploaded
+        // console.log(req.body);
 
         const newSong = new Song({
             title: req.body.title,
@@ -61,6 +61,7 @@ app.post("/api/songs", uploadSongAndCover, async (req, res) => {
 app.get("/api/songs", async (req, res) => {
     try {
         const songs = await Song.find();
+        console.log(songs);
         res.json(songs);
     } catch (err) {
         res.status(500).json({ error: "Failed to fetch songs" });

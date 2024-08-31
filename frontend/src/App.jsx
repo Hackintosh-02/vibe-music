@@ -7,8 +7,12 @@ import NowPlaying from './components/NowPlaying';
 import UploadSong from './components/UploadSong';
 import axios from 'axios';
 
-
+// console.log(process.env.REACT_APP_BACKEND_ADDRESS); 
 const App = () => {
+    // const address = {import.meta.env.VITE_REACT_APP_BACKEND_ADDRESS};
+    // console.log(address);
+    // console.log(import.meta.env.VITE_REACT_APP_BACKEND_ADDRESS);
+
     const [songs, setSongs] = useState([]);
     const [currentSong, setCurrentSong] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -20,7 +24,8 @@ const App = () => {
     useEffect(() => {
         const fetchSongs = async () => {
             try {
-                const response = await axios.get('http://13.60.230.157/api/songs');
+    console.log(import.meta.env.VITE_REACT_APP_BACKEND_ADDRESS);
+                const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_ADDRESS}/api/songs`);
                 setSongs(response.data);
                 if (response.data.length > 0) {
                     setCurrentSong(response.data[0]);

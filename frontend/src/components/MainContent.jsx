@@ -10,7 +10,7 @@ const MainContent = ({ onPlayPause }) => {
     useEffect(() => {
         const fetchSongs = async () => {
             try {
-                const response = await axios.get('http://13.60.230.157/api/songs');
+                const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_ADDRESS}/api/songs`);
                 setSongs(response.data);
             } catch (error) {
                 console.error('Error fetching songs:', error);
